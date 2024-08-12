@@ -7,23 +7,24 @@ const db = [];
 let proxId = 1;
 
 const model = (id = proxId++) => {
-  const nome = prompt("Nome: ");
+  const numero = parseInt(prompt("Numero: "));
+  const bairro = prompt("Bairro: ");
+  const rua = prompt("Rua: ");
 
-  let id_corretora = 0
-  if(corretora.index()) {
-      id_corretora = parseInt(prompt("ID da corretora: "));
+  let id_corretora = 0;
+  if (corretora.index()) {
+    id_corretora = parseInt(prompt("ID da corretora: "));
   } else {
-      console.log("Cadastre uma corretora para inserir um corretor");
+    console.log("Cadastre uma corretora para inserir um corretor");
   }
 
-  if (
-    nome != "" &&
-    corretora.show(id_corretora)
-  ) {
+  if (numero > 0 && bairro != "" && rua != "" && corretora.show(id_corretora)) {
     return {
       id,
-      nome,
-      id_corretora
+      numero,
+      bairro,
+      rua,
+      id_corretora,
     };
   }
 
@@ -40,13 +41,17 @@ const store = () => {
   }
 };
 
-const index = () => {
+const index = (id_corretora) => {
   if (db.length == 0) {
     console.log("Nenhum registro encontrado.");
     return false;
   }
 
-  db.forEach((el) => console.log(el));
+  db.forEach((el) => {
+    if (el.id_corretora == id_corretora || !id_corretora) {
+      console.log(el);
+    }
+  });
   return true;
 };
 
@@ -72,24 +77,24 @@ const update = () => {
 };
 
 const destroy = () => {
-    if(index()) {
-        const id = parseInt(prompt("ID: "));
+  if (index()) {
+    const id = parseInt(prompt("ID: "));
 
-        const indice = db.findIndex(el => el.id == id);
+    const indice = db.findIndex((el) => el.id == id);
 
-        if(indice != -1) {
-            db.splice(indice, 1);
-            console.log("Registro excluído com sucesso");
-        } else {
-            console.log("Registro não encontrado")
-        }
+    if (indice != -1) {
+      db.splice(indice, 1);
+      console.log("Registro excluído com sucesso");
+    } else {
+      console.log("Registro não encontrado");
     }
-}
+  }
+};
 
 module.exports = {
-    store,
-    index,
-    show,
-    update,
-    destroy
-}
+  store,
+  index,
+  show,
+  update,
+  destroy,
+};
